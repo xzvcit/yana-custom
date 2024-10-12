@@ -184,8 +184,6 @@ class AMI extends EventEmitter {
   _processMessage(rawMsg) {
     const objMsg = {};
 
-    console.log({ rawMsg });
-
     for (const line of rawMsg) {
       if (this._cmdHack && line.match(REGEX_END_COMMAND)) {
         objMsg.output = line.split("\n").slice(0, -1);
@@ -214,7 +212,7 @@ class AMI extends EventEmitter {
       this.emit(objMsg.event, objMsg);
 
       if ("cause-txt" in objMsg && objMsg["cause-txt"] === "Call Rejected") {
-        this.emit("CallRejected", {});
+        this.emit("CallRejected", objMsg);
       }
       if (objMsg.event === "DTMFBegin") {
         const outgoingNumber = objMsg.connectedlinenum;
